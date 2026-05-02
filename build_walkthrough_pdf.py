@@ -88,10 +88,13 @@ story = [
     head("3. Download the UCI HAR dataset"),
     p("Paste in a new cell and run:"),
     block(
-        '!wget -q "https://archive.ics.uci.edu/static/public/240/'
-        'human+activity+recognition+using+smartphones.zip" -O har.zip\n'
+        '!wget -q "https://archive.ics.uci.edu/static/public/240/human+activity+recognition+using+smartphones.zip" -O har.zip\n'
         '!unzip -q -o har.zip\n'
-        '!unzip -q -o "UCI HAR Dataset.zip"   # the outer zip contains an inner zip\n'
+        '!ls'
+    ),
+    n("If ls shows UCI HAR Dataset.zip (an inner zip), run this in a second cell:"),
+    block(
+        '!unzip -q -o "UCI HAR Dataset.zip"\n'
         '!ls "UCI HAR Dataset"'
     ),
     p(
