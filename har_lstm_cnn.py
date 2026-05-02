@@ -2,22 +2,20 @@ import os
 import keras
 from keras import layers
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras import layers, models, regularizers
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, f1_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from flax.nnx import optimizer
-from warnings import filters
-import os, pathlib
-from keras.utils import image_dataset_from_directory
 
 keras.utils.set_random_seed(0)
 np.random.seed(0)
-Batch_size = 64
-Epochs = 50
-L2_Reg = 1e-4
-test_size = 0.2
+
+ACTIVITY_LABELS = [
+    "WALKING",
+    "WALKING_UPSTAIRS",
+    "WALKING_DOWNSTAIRS",
+    "SITTING",
+    "STANDING",
+    "LAYING",
+]
 
 #loading the data
 
@@ -114,7 +112,7 @@ def build_cnn():
   return model
 
 
-  #Train LSTM
+#Train LSTM
 lstm_model = build_lstm()
 print("\nTraining LSTM...")
 history_lstm = lstm_model.fit(
@@ -141,16 +139,25 @@ history_cnn = cnn_model.fit(
 #evaluating both models
 def evaluate(model, name):
   print(f"\n===== {name} Evaluation =====")
-  loss, acc = model.evaluate(x_test, y_test, verbose = 0)
+  loss, acc = model.evaluate(x_test, y_test, verbose=0)
+  print(f"{name} Loss:     {loss:.4f}")
   print(f"{name} Accuracy: {acc:.4f}")
 
-  y_pred = np.argmax(model.predict(x_test), axis = 1)
+  y_pred = np.argmax(model.predict(x_test, verbose=0), axis=1)
+
+  per_class_f1 = f1_score(y_test, y_pred, average=None)
+  print("\nPer-class F1:")
+  for label, score in zip(ACTIVITY_LABELS, per_class_f1):
+    print(f"  {label:<20s} {score:.4f}")
+  print(f"  {'macro avg':<20s} {f1_score(y_test, y_pred, average='macro'):.4f}")
+  print(f"  {'weighted avg':<20s} {f1_score(y_test, y_pred, average='weighted'):.4f}")
 
   print("\nClassification Report:")
-  print(classification_report(y_test, y_pred))
+  print(classification_report(y_test, y_pred, target_names=ACTIVITY_LABELS, digits=4))
 
-  print("\nConfusion Matrix:")
+  print("Confusion Matrix:")
   print(confusion_matrix(y_test, y_pred))
 
-  evaluate(lstm_model, "LSTM")
-  evaluate(cnn_model, "CNN")
+
+evaluate(lstm_model, "LSTM")
+evaluate(cnn_model, "CNN")
