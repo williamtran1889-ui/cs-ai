@@ -1,0 +1,279 @@
+# HAR LSTM/CNN smoke run
+#
+# Data: SYNTHETIC (1000 train / 300 test, 561 features, 6 classes,
+#       6 random Gaussian centroids + noise). The real UCI HAR dataset
+#       is not accessible from this sandbox.
+# Purpose: verify the pipeline runs end-to-end and the evaluation
+#       block (loss, accuracy, per-class F1, classification report,
+#       confusion matrix) formats correctly.
+# Metrics below are NOT meaningful as model evaluation -- they reflect
+# fitting noise around random centroids on a tiny test set.
+#
+# Reproduce with the real dataset:
+#   pip install tensorflow scikit-learn
+#   place 'UCI HAR Dataset/' next to har_lstm_cnn.py
+#   python har_lstm_cnn.py
+
+Files in HAR folder: ['test', 'train']
+Train shape: (1000, 1, 561)
+Test shape: (300, 1, 561)
+Timesteps: 1
+Features: 561
+Classes: 6
+E0000 00:00:1777728145.895347   11813 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+
+Training LSTM...
+Epoch 1/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 2s 16ms/step - accuracy: 0.6267 - loss: 1.5819 - val_accuracy: 1.0000 - val_loss: 1.1834
+Epoch 2/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9056 - loss: 0.9164 - val_accuracy: 1.0000 - val_loss: 0.4486
+Epoch 3/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9722 - loss: 0.4250 - val_accuracy: 1.0000 - val_loss: 0.1262
+Epoch 4/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9944 - loss: 0.1825 - val_accuracy: 1.0000 - val_loss: 0.0304
+Epoch 5/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9978 - loss: 0.0968 - val_accuracy: 1.0000 - val_loss: 0.0095
+Epoch 6/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0594 - val_accuracy: 1.0000 - val_loss: 0.0041
+Epoch 7/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0466 - val_accuracy: 1.0000 - val_loss: 0.0020
+Epoch 8/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9967 - loss: 0.0360 - val_accuracy: 1.0000 - val_loss: 0.0010
+Epoch 9/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0245 - val_accuracy: 1.0000 - val_loss: 6.1946e-04
+Epoch 10/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0206 - val_accuracy: 1.0000 - val_loss: 3.8651e-04
+Epoch 11/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0223 - val_accuracy: 1.0000 - val_loss: 2.6197e-04
+Epoch 12/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0184 - val_accuracy: 1.0000 - val_loss: 1.8022e-04
+Epoch 13/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0169 - val_accuracy: 1.0000 - val_loss: 1.2290e-04
+Epoch 14/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0117 - val_accuracy: 1.0000 - val_loss: 8.7842e-05
+Epoch 15/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0082 - val_accuracy: 1.0000 - val_loss: 6.6193e-05
+Epoch 16/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0087 - val_accuracy: 1.0000 - val_loss: 5.0773e-05
+Epoch 17/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0085 - val_accuracy: 1.0000 - val_loss: 3.7085e-05
+Epoch 18/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0123 - val_accuracy: 1.0000 - val_loss: 2.6547e-05
+Epoch 19/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0087 - val_accuracy: 1.0000 - val_loss: 2.2076e-05
+Epoch 20/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0082 - val_accuracy: 1.0000 - val_loss: 1.7308e-05
+Epoch 21/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 7ms/step - accuracy: 0.9989 - loss: 0.0058 - val_accuracy: 1.0000 - val_loss: 1.3759e-05
+Epoch 22/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0079 - val_accuracy: 1.0000 - val_loss: 1.1101e-05
+Epoch 23/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0083 - val_accuracy: 1.0000 - val_loss: 8.4102e-06
+Epoch 24/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0058 - val_accuracy: 1.0000 - val_loss: 7.0273e-06
+Epoch 25/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0041 - val_accuracy: 1.0000 - val_loss: 5.5873e-06
+Epoch 26/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0049 - val_accuracy: 1.0000 - val_loss: 4.3261e-06
+Epoch 27/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0048 - val_accuracy: 1.0000 - val_loss: 3.9482e-06
+Epoch 28/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 0.9989 - loss: 0.0047 - val_accuracy: 1.0000 - val_loss: 3.5739e-06
+Epoch 29/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0046 - val_accuracy: 1.0000 - val_loss: 3.3319e-06
+Epoch 30/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0045 - val_accuracy: 1.0000 - val_loss: 2.9385e-06
+
+Training CNN...
+Epoch 1/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 1s 10ms/step - accuracy: 0.8778 - loss: 0.4209 - val_accuracy: 1.0000 - val_loss: 1.2661e-04
+Epoch 2/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 0.0020 - val_accuracy: 1.0000 - val_loss: 1.0621e-05
+Epoch 3/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 0.0016 - val_accuracy: 1.0000 - val_loss: 5.2666e-06
+Epoch 4/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 8.1760e-04 - val_accuracy: 1.0000 - val_loss: 3.6359e-06
+Epoch 5/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 5.5690e-04 - val_accuracy: 1.0000 - val_loss: 2.3031e-06
+Epoch 6/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 3.8826e-04 - val_accuracy: 1.0000 - val_loss: 1.6093e-06
+Epoch 7/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 4.4773e-04 - val_accuracy: 1.0000 - val_loss: 1.2672e-06
+Epoch 8/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 2.3363e-04 - val_accuracy: 1.0000 - val_loss: 9.0122e-07
+Epoch 9/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 3.0247e-04 - val_accuracy: 1.0000 - val_loss: 7.2479e-07
+Epoch 10/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 2.7513e-04 - val_accuracy: 1.0000 - val_loss: 6.0797e-07
+Epoch 11/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 7.8049e-04 - val_accuracy: 1.0000 - val_loss: 6.0201e-07
+Epoch 12/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.9291e-04 - val_accuracy: 1.0000 - val_loss: 4.3511e-07
+Epoch 13/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 2.8021e-04 - val_accuracy: 1.0000 - val_loss: 2.9445e-07
+Epoch 14/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 2.1300e-04 - val_accuracy: 1.0000 - val_loss: 1.9312e-07
+Epoch 15/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 2.0162e-04 - val_accuracy: 1.0000 - val_loss: 1.6093e-07
+Epoch 16/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 6.1839e-05 - val_accuracy: 1.0000 - val_loss: 1.4186e-07
+Epoch 17/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 8.0644e-05 - val_accuracy: 1.0000 - val_loss: 1.1921e-07
+Epoch 18/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 1.1889e-04 - val_accuracy: 1.0000 - val_loss: 9.7752e-08
+Epoch 19/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 1.7636e-04 - val_accuracy: 1.0000 - val_loss: 7.8678e-08
+Epoch 20/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 6ms/step - accuracy: 1.0000 - loss: 6.7463e-05 - val_accuracy: 1.0000 - val_loss: 6.3181e-08
+Epoch 21/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.3191e-04 - val_accuracy: 1.0000 - val_loss: 4.7684e-08
+Epoch 22/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.1160e-04 - val_accuracy: 1.0000 - val_loss: 4.1723e-08
+Epoch 23/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.4057e-04 - val_accuracy: 1.0000 - val_loss: 3.0994e-08
+Epoch 24/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.1684e-04 - val_accuracy: 1.0000 - val_loss: 2.9802e-08
+Epoch 25/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step - accuracy: 1.0000 - loss: 4.0518e-05 - val_accuracy: 1.0000 - val_loss: 2.6226e-08
+Epoch 26/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.7638e-04 - val_accuracy: 1.0000 - val_loss: 1.3113e-08
+Epoch 27/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 1.9659e-05 - val_accuracy: 1.0000 - val_loss: 1.1921e-08
+Epoch 28/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 4.1353e-05 - val_accuracy: 1.0000 - val_loss: 9.5367e-09
+Epoch 29/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 6.3494e-05 - val_accuracy: 1.0000 - val_loss: 5.9605e-09
+Epoch 30/30
+
+29/29 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 1.0000 - loss: 2.3428e-05 - val_accuracy: 1.0000 - val_loss: 4.7684e-09
+
+===== LSTM Evaluation =====
+LSTM Loss:     2.4165
+LSTM Accuracy: 0.1667
+
+Per-class F1:
+  WALKING              0.0370
+  WALKING_UPSTAIRS     0.4632
+  WALKING_DOWNSTAIRS   0.0296
+  SITTING              0.3356
+  STANDING             0.0000
+  LAYING               0.0000
+  macro avg            0.1442
+  weighted avg         0.1399
+
+Classification Report:
+                    precision    recall  f1-score   support
+
+           WALKING     0.5000    0.0192    0.0370        52
+  WALKING_UPSTAIRS     0.4314    0.5000    0.4632        44
+WALKING_DOWNSTAIRS     0.0241    0.0385    0.0296        52
+           SITTING     0.2632    0.4630    0.3356        54
+          STANDING     0.0000    0.0000    0.0000        40
+            LAYING     0.0000    0.0000    0.0000        58
+
+          accuracy                         0.1667       300
+         macro avg     0.2031    0.1701    0.1442       300
+      weighted avg     0.2015    0.1667    0.1399       300
+
+Confusion Matrix:
+[[ 1  1 18 18  2 12]
+ [ 1 22  2  3 15  1]
+ [ 0  0  2 15  7 28]
+ [ 0 26  0 25  3  0]
+ [ 0  2  3 34  0  1]
+ [ 0  0 58  0  0  0]]
+
+===== CNN Evaluation =====
+CNN Loss:     2.6501
+CNN Accuracy: 0.1367
+
+Per-class F1:
+  WALKING              0.2887
+  WALKING_UPSTAIRS     0.0000
+  WALKING_DOWNSTAIRS   0.2022
+  SITTING              0.3913
+  STANDING             0.0000
+  LAYING               0.0000
+  macro avg            0.1470
+  weighted avg         0.1555
+
+Classification Report:
+                    precision    recall  f1-score   support
+
+           WALKING     0.3111    0.2692    0.2887        52
+  WALKING_UPSTAIRS     0.0000    0.0000    0.0000        44
+WALKING_DOWNSTAIRS     0.2432    0.1731    0.2022        52
+           SITTING     0.4737    0.3333    0.3913        54
+          STANDING     0.0000    0.0000    0.0000        40
+            LAYING     0.0000    0.0000    0.0000        58
+
+          accuracy                         0.1367       300
+         macro avg     0.1713    0.1293    0.1470       300
+      weighted avg     0.1814    0.1367    0.1555       300
+
+Confusion Matrix:
+[[14 30  6  0  0  2]
+ [ 0  0  0  8 36  0]
+ [ 1  0  9  1 26 15]
+ [14 19  1 18  2  0]
+ [ 7 20  2 11  0  0]
+ [ 9 28 19  0  2  0]]
