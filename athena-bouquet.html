@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Athena — A Bouquet of Tulips</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Georgia', serif;
+    background: linear-gradient(180deg, #ffe9f1 0%, #fff5e6 45%, #e6f7e6 100%);
+    cursor: crosshair;
+  }
+
+  .scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .sun {
+    position: absolute;
+    top: 8%;
+    right: 12%;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, #fff3a8 0%, #ffd76b 60%, rgba(255, 215, 107, 0) 75%);
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: sunPulse 6s ease-in-out infinite;
+  }
+
+  @keyframes sunPulse {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+
+  .title {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #c2185b;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .title h1 {
+    font-size: 2.6rem;
+    font-style: italic;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .title p {
+    font-size: 1rem;
+    color: #8e3a5d;
+    opacity: 0.85;
+  }
+
+  .ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 22%;
+    background: linear-gradient(180deg, rgba(160, 200, 120, 0) 0%, #9bcf7a 40%, #6fa550 100%);
+    z-index: 1;
+  }
+
+  .vase {
+    position: absolute;
+    bottom: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 200px;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .vase-body {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 170px;
+    background: linear-gradient(135deg,
+      rgba(180, 220, 255, 0.55) 0%,
+      rgba(140, 200, 240, 0.7) 50%,
+      rgba(100, 170, 220, 0.6) 100%);
+    border-radius: 20px 20px 90px 90px / 20px 20px 100px 100px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      inset 10px 0 20px rgba(255, 255, 255, 0.4),
+      inset -10px 0 20px rgba(50, 100, 150, 0.2),
+      0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .vase-rim {
+    position: absolute;
+    bottom: 165px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210px;
+    height: 18px;
+    background: linear-gradient(180deg,
+      rgba(200, 230, 255, 0.7),
+      rgba(140, 190, 230, 0.6));
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .bouquet {
+    position: absolute;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 60vh;
+    z-index: 4;
+  }
+
+  .tulip {
+    position: absolute;
+    bottom: 0;
+    transform-origin: bottom center;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+    animation: sway 4s ease-in-out infinite;
+  }
+
+  .tulip:hover {
+    transform: scale(1.08) rotate(0deg) !important;
+    animation-play-state: paused;
+    z-index: 20;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+
+  .stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(90deg, #4a8a3a 0%, #6fb04e 50%, #4a8a3a 100%);
+    border-radius: 3px;
+    transform: translateX(-50%);
+    box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .leaf {
+    position: absolute;
+    width: 40px;
+    height: 80px;
+    background: linear-gradient(135deg, #6fb04e 0%, #4a8a3a 100%);
+    border-radius: 50% 10% 50% 10%;
+    bottom: 30%;
+    left: 50%;
+    transform-origin: bottom right;
+    transform: translateX(-95%) rotate(-25deg);
+    box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .leaf.right {
+    transform: translateX(-5%) rotate(25deg) scaleX(-1);
+    bottom: 18%;
+  }
+
+  .flower {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 90px;
+  }
+
+  .petal {
+    position: absolute;
+    width: 36px;
+    height: 70px;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    box-shadow:
+      inset -4px -8px 12px rgba(0, 0, 0, 0.15),
+      inset 4px 4px 10px rgba(255, 255, 255, 0.4);
+  }
+
+  .petal.back {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    z-index: 1;
+  }
+
+  .petal.left {
+    left: 8%;
+    top: 10%;
+    transform: rotate(-15deg);
+    z-index: 2;
+  }
+
+  .petal.right {
+    right: 8%;
+    top: 10%;
+    transform: rotate(15deg);
+    z-index: 2;
+  }
+
+  .petal.front {
+    left: 50%;
+    top: 14%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 55px;
+    z-index: 3;
+  }
+
+  /* Tulip colors */
+  .pink .petal { background: linear-gradient(180deg, #ff8db8 0%, #d63384 100%); }
+  .red .petal { background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%); }
+  .yellow .petal { background: linear-gradient(180deg, #ffe066 0%, #f59f00 100%); }
+  .purple .petal { background: linear-gradient(180deg, #d0bfff 0%, #845ef7 100%); }
+  .white .petal { background: linear-gradient(180deg, #ffffff 0%, #ffe0ec 100%); }
+  .orange .petal { background: linear-gradient(180deg, #ffc078 0%, #fd7e14 100%); }
+  .coral .petal { background: linear-gradient(180deg, #ffb3a7 0%, #ff6f61 100%); }
+
+  /* Message panel */
+  .message {
+    position: absolute;
+    bottom: 8%;
+    left: 4%;
+    max-width: 280px;
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 192, 203, 0.5);
+    box-shadow: 0 8px 24px rgba(194, 24, 91, 0.15);
+    z-index: 30;
+    color: #6a2240;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeUp 1.2s ease-out 0.6s forwards;
+  }
+
+  .message h3 {
+    color: #c2185b;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .message .signature {
+    margin-top: 10px;
+    text-align: right;
+    font-style: italic;
+    color: #8e3a5d;
+  }
+
+  @keyframes fadeUp {
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Hint */
+  .hint {
+    position: absolute;
+    top: 22%;
+    right: 4%;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #8e3a5d;
+    z-index: 30;
+    animation: fadeUp 1s ease-out 1.5s both;
+  }
+
+  /* Sparkles & petals dropped on click */
+  .sparkle {
+    position: absolute;
+    pointer-events: none;
+    font-size: 1.5rem;
+    animation: sparkleRise 1.8s ease-out forwards;
+    z-index: 40;
+  }
+
+  @keyframes sparkleRise {
+    0% { transform: translate(0, 0) scale(0.4); opacity: 1; }
+    100% { transform: translate(var(--dx), -120px) scale(1.4) rotate(360deg); opacity: 0; }
+  }
+
+  .falling-petal {
+    position: absolute;
+    top: -20px;
+    width: 18px;
+    height: 22px;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    pointer-events: none;
+    z-index: 35;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0.7; }
+  }
+
+  /* Counter */
+  .counter {
+    position: absolute;
+    top: 4%;
+    left: 4%;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #c2185b;
+    z-index: 30;
+  }
+
+  .counter span { font-weight: bold; }
+
+  @media (max-width: 600px) {
+    .title h1 { font-size: 1.8rem; }
+    .bouquet { width: 90%; }
+    .message { left: 50%; transform: translateX(-50%) translateY(20px); max-width: 90%; bottom: 30%; }
+    @keyframes fadeUp {
+      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+  }
+</style>
+</head>
+<body>
+<div class="scene" id="scene">
+  <div class="sun"></div>
+
+  <div class="title">
+    <h1>For Athena 🌷</h1>
+    <p>a bouquet that blooms whenever you visit</p>
+  </div>
+
+  <div class="counter">Love taps: <span id="count">0</span></div>
+
+  <div class="hint">✨ Hover a tulip. Click for magic.</div>
+
+  <div class="ground"></div>
+
+  <div class="bouquet" id="bouquet"></div>
+
+  <div class="vase">
+    <div class="vase-rim"></div>
+    <div class="vase-body"></div>
+  </div>
+
+  <div class="message">
+    <h3>To my Athena,</h3>
+    <p>Real tulips wilt. These ones stay in bloom — exactly like the way I feel about you. Pick any flower and watch it dance.</p>
+    <div class="signature">— yours, always</div>
+  </div>
+</div>
+
+<script>
+  const colors = ['pink', 'red', 'yellow', 'purple', 'white', 'orange', 'coral'];
+  const colorHex = {
+    pink: '#d63384', red: '#c92a2a', yellow: '#f59f00',
+    purple: '#845ef7', white: '#ffe0ec', orange: '#fd7e14', coral: '#ff6f61'
+  };
+
+  const bouquet = document.getElementById('bouquet');
+  const sceneEl = document.getElementById('scene');
+  const countEl = document.getElementById('count');
+  let clicks = 0;
+
+  // Arrangement: cluster of tulips with varied heights and angles
+  const arrangement = [
+    { x: 50, h: 95, tilt: -12, scale: 0.85, z: 1 },
+    { x: 30, h: 88, tilt: -18, scale: 0.9, z: 2 },
+    { x: 70, h: 88, tilt: 18, scale: 0.9, z: 2 },
+    { x: 15, h: 78, tilt: -25, scale: 0.85, z: 1 },
+    { x: 85, h: 78, tilt: 25, scale: 0.85, z: 1 },
+    { x: 40, h: 100, tilt: -6, scale: 1, z: 3 },
+    { x: 60, h: 100, tilt: 6, scale: 1, z: 3 },
+    { x: 50, h: 105, tilt: 0, scale: 1.05, z: 4 },
+    { x: 22, h: 70, tilt: -28, scale: 0.8, z: 1 },
+    { x: 78, h: 70, tilt: 28, scale: 0.8, z: 1 },
+    { x: 35, h: 82, tilt: -10, scale: 0.88, z: 2 },
+    { x: 65, h: 82, tilt: 10, scale: 0.88, z: 2 },
+  ];
+
+  arrangement.forEach((spec, i) => {
+    const color = colors[i % colors.length];
+    const tulip = document.createElement('div');
+    tulip.className = `tulip ${color}`;
+    tulip.style.left = `${spec.x}%`;
+    tulip.style.height = `${spec.h}%`;
+    tulip.style.width = '70px';
+    tulip.style.marginLeft = '-35px';
+    tulip.style.transform = `rotate(${spec.tilt}deg) scale(${spec.scale})`;
+    tulip.style.zIndex = spec.z;
+    tulip.style.animationDelay = `${(i * 0.3) % 4}s`;
+    tulip.style.animationDuration = `${3.5 + (i % 3) * 0.4}s`;
+    tulip.dataset.color = color;
+
+    tulip.innerHTML = `
+      <div class="stem"></div>
+      <div class="leaf"></div>
+      <div class="leaf right"></div>
+      <div class="flower">
+        <div class="petal back"></div>
+        <div class="petal left"></div>
+        <div class="petal right"></div>
+        <div class="petal front"></div>
+      </div>
+    `;
+
+    tulip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      celebrate(tulip, color);
+    });
+
+    bouquet.appendChild(tulip);
+  });
+
+  function celebrate(tulip, color) {
+    clicks++;
+    countEl.textContent = clicks;
+
+    const rect = tulip.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 4;
+
+    // Sparkles
+    const symbols = ['✨', '💕', '🌸', '💖', '🌷', '⭐'];
+    for (let i = 0; i < 6; i++) {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      s.style.left = `${cx}px`;
+      s.style.top = `${cy}px`;
+      s.style.setProperty('--dx', `${(Math.random() - 0.5) * 200}px`);
+      sceneEl.appendChild(s);
+      setTimeout(() => s.remove(), 1800);
+    }
+
+    // Brief pulse on the tulip
+    tulip.style.transition = 'transform 0.3s ease';
+    const baseTransform = tulip.style.transform;
+    tulip.style.transform = baseTransform + ' scale(1.15)';
+    setTimeout(() => {
+      tulip.style.transform = baseTransform;
+    }, 300);
+
+    // Special milestone
+    if (clicks === 12) {
+      showLoveBurst();
+    }
+  }
+
+  function showLoveBurst() {
+    const msg = document.createElement('div');
+    msg.style.cssText = `
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px 40px; border-radius: 20px;
+      color: #c2185b; font-size: 1.4rem; font-style: italic;
+      box-shadow: 0 20px 60px rgba(194, 24, 91, 0.3);
+      z-index: 100; text-align: center;
+      transition: transform 0.6s cubic-bezier(.34,1.56,.64,1);
+    `;
+    msg.innerHTML = '💖 You touched every tulip 💖<br><span style="font-size:0.9rem; color:#8e3a5d;">just like you touched my heart</span>';
+    document.body.appendChild(msg);
+    requestAnimationFrame(() => {
+      msg.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+    setTimeout(() => {
+      msg.style.transform = 'translate(-50%, -50%) scale(0)';
+      setTimeout(() => msg.remove(), 600);
+    }, 3500);
+  }
+
+  // Falling petals background
+  function spawnFallingPetal() {
+    const petal = document.createElement('div');
+    petal.className = 'falling-petal';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    petal.style.background = `linear-gradient(180deg, ${colorHex[color]}aa, ${colorHex[color]})`;
+    petal.style.left = `${Math.random() * 100}%`;
+    petal.style.animationDuration = `${6 + Math.random() * 6}s`;
+    petal.style.opacity = 0.6 + Math.random() * 0.4;
+    sceneEl.appendChild(petal);
+    setTimeout(() => petal.remove(), 12000);
+  }
+
+  setInterval(spawnFallingPetal, 900);
+  for (let i = 0; i < 4; i++) {
+    setTimeout(spawnFallingPetal, i * 400);
+  }
+
+  // Click anywhere for a tiny sparkle
+  sceneEl.addEventListener('click', (e) => {
+    if (e.target.closest('.tulip')) return;
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.textContent = '✨';
+    s.style.left = `${e.clientX}px`;
+    s.style.top = `${e.clientY}px`;
+    s.style.setProperty('--dx', `${(Math.random() - 0.5) * 80}px`);
+    sceneEl.appendChild(s);
+    setTimeout(() => s.remove(), 1800);
+  });
+</script>
+</body>
+</html>
