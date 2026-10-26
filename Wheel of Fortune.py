@@ -62,7 +62,7 @@ try:
             else:
                 display = display + "_ " 
         print(display)
-        time.sleep(1) #one letter per second
+        time.sleep(3) #one letter per second
     print("nobody got the answer, phrase was:", Phrase)
 
 except KeyboardInterrupt: #Ctrl+C acts as the buzzer
