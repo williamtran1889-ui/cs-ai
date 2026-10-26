@@ -1,6 +1,8 @@
 #library
 import random
 import time
+import json
+
 
 #player
 player_count = 0
@@ -29,9 +31,16 @@ for round_number in range(6):
     if turn == len(players_list):
         turn = 0
 
+
+
+
 #14 - toss up questions to be displayed letter by letter until a player buzzes in that they have an answer
 #the phrase as blanks
-Phrase = "BREAK THE ICE" #example of a phrase
+with open("phrases.json", "r") as file:
+    data = json.load(file)
+
+Phrase = random.choice(random.choice(data["phrases"]))
+
 display = ""
 for letter in Phrase:
     if letter == " ":
@@ -62,21 +71,14 @@ try:
             else:
                 display = display + "_ " 
         print(display)
-        time.sleep(3) #one letter per second
+        time.sleep(1) #one letter per second
     print("nobody got the answer, phrase was:", Phrase)
 
-except KeyboardInterrupt: #Ctrl+C acts as the buzzer
+except KeyboardInterrupt:
     print("\nBuzz!")
+    answer = input("Your Answer: ")
 
-    #adding timer
-    time_limit = 100 #100 seconds
-    start = time.time()
-    answer = input("Your Answer:") #save user answers
-    elapsed = time.time() - start #showing seconds that passed
-
-    if elapsed > time_limit:
-        print("Ran out of time")
-    elif answer.upper() == Phrase:
+    if answer.strip().upper() == Phrase:
         print("Bingo! Correct")
     else:
         print("Wrong! The phrase was:", Phrase)
