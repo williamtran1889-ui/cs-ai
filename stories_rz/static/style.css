@@ -1,0 +1,153 @@
+* { box-sizing: border-box; }
+
+body { 
+  margin: 0;
+  padding: 24px 12px 40px; 
+  background: #111; 
+  color: #fff; 
+  font-family: Arial, Helvetica, sans-serif; 
+}
+
+h1{ text-align: center; }
+
+.game-container { 
+  width: min(100%, 1120px); 
+  margin: 0 auto; 
+}
+
+/* Start button container */
+.start-form { 
+  display: flex; 
+  justify-content: center; 
+  margin: 0 0 22px; 
+}
+
+/* Start and Guess buttons */
+.start-button, .guess-button { 
+  border: 2px solid #fff; 
+  border-radius: 5px; 
+  padding: 11px 28px; 
+  background: #006A4E; 
+  color: #fff; 
+  font-size: 1rem; 
+  font-weight: 700; 
+  cursor: pointer; 
+}
+
+.start-button:hover, .guess-button:hover { background: #10783a; }
+
+/* Puzzle board and rows */
+.board { 
+  display: flex; 
+  margin: 0 auto;
+  flex-direction: column; 
+  align-items: center; 
+  gap: 5px; 
+  width: 60%; 
+  border: 3px solid cyan; 
+  border-radius: 5px; 
+  padding: 10px; 
+  background: #C4C4C4; 
+}
+
+/* Each row of the puzzle board */
+.board-row { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%; 
+}
+
+/* Each word in a row of the puzzle board */
+.word {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* Each tile on the puzzle board */
+.tile { 
+  width: 38px;
+    height: 42px;
+    flex: 0 0 38px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #111;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+/* Green tile for spaces between words */
+.green-tile { 
+  background: #006A4E; 
+  color: #000; 
+}
+
+/* Letter tile for letters in the puzzle board */
+.letter-tile { 
+  background: #fff; 
+  color: #000; 
+  font-size: clamp(15px, 2.1vw, 27px); 
+  font-weight: 900; 
+}
+
+/* Game stats and input section */
+.game-info { 
+  margin: 26px auto 0; 
+  max-width: 760px; 
+  text-align: center; 
+}
+
+.game-info h1 { 
+  margin: 0 0 10px; 
+  font-size: clamp(1.4rem, 3vw, 2rem); 
+}
+
+/* Stats section for spin value and total money */
+.stats { 
+  display: flex; 
+  justify-content: center; 
+  flex-wrap: wrap; 
+  gap: 10px 28px; 
+}
+.stats p { margin: 4px 0; }
+
+/* Form for guessing letters */
+.guess-form { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  margin-top: 18px; 
+}
+.guess-form label { font-weight: 700; }
+
+.guess-form input { 
+  width: 54px; 
+  height: 44px; 
+  border: 2px solid #aaa; 
+  border-radius: 4px; 
+  text-align: center; 
+  font-size: 1.35rem; 
+  text-transform: uppercase;  
+}
+
+.message { 
+  min-height: 1.3em; 
+  margin: 16px 0 12px; 
+}
+.guessed-area { 
+  margin-top: 10px; 
+  overflow-wrap: anywhere; 
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+  body { padding-left: 4px; padding-right: 4px; }
+  .board-row { gap: 2px; }
+  .tile { border-width: 1px; height: 30px; font-size: clamp(11px, 2.7vw, 17px); }
+}

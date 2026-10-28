@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheel of Fortune</title>
+  <!--Link external style sheet-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Wheel of Fortune</h1>
+<main class="game-container">
+
+  <!--Form for starting a new game-->
+  <form method="post" class="start-form">
+    <button class="start-button" type="submit" name="action" value="start">START</button>
+  </form>
+
+  <!--Puzzle Board Section-->
+  <section class="board" aria-label="Puzzle board">
+    {% for row_index in range(board_rows|length) %}
+        <div class="board-row">
+            {% set words = board_letters[row_index] %}
+            {% set ns = namespace(used=0) %}
+
+            <!--Iterate through each word in the current row-->
+            {% for word in words %}
+                <!--Display a green tile as a separator between words-->
+                {% if not loop.first %}
+                    <div class="tile green-tile"></div>
+                    {% set ns.used = ns.used + 1 %}
+                {% endif %}
+
+                <!--Display the letters of the current word-->
+                <div class="word">
+                    {% for letter in word %}
+                        <div class="tile {% if letter == ' ' %}green-tile{% else %}letter-tile{% endif %}">
+                            <!--Reveal the letter if it has been guessed-->
+                            {% if letter != ' ' and letter in guessed_letters %}
+                                {{ letter }}
+                            {% endif %}
+                        </div>
+                        {% set ns.used = ns.used + 1 %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            
+            {% for box in range([board_rows[row_index] - ns.used, 0]|max) %}
+                <div class="tile green-tile"></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <h1>{{ game.category }}</h1>
+  </section>
+
+  <!--Game Information Section-->
+  {% if game %}
+  <section class="game-info">
+    <div class="stats">
+      <p><strong>Spin value:</strong> ${{ "{:,}".format(spin_value) }}</p>
+      <p><strong>Total money:</strong> ${{ "{:,}".format(money) }}</p>
+    </div>
+
+    <!--Form for making guesses-->
+    <form method="post" class="guess-form">
+      <input type="hidden" name="action" value="guess">
+      <label for="letter">Guess a consonant</label>
+      <input id="letter" name="letter" type="text" maxlength="1" pattern="[A-Za-z]" autocomplete="off" required>
+      <button type="submit" class="guess-button">GUESS</button>
+    </form>
+
+    <!--Message area for game feedback-->
+    <p class="message" aria-live="polite">{{ message }}</p>
+
+    <!--Area for displaying guessed letters-->
+    <div class="guessed-area"><strong>Guessed letters:</strong>
+      {% if guessed_letters %}<span>{{ guessed_letters | join(", ") }}</span>{% else %}<span>None yet</span>{% endif %}
+    </div>
+  </section>
+  {% endif %}
+</main>
+</body>
+</html>
