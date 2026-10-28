@@ -123,6 +123,22 @@ class Wheel:
         index = self.index_at(self.angle)
         return SpinResult(self.wedges[index], index, start, rotation)
 
+    def to_dict(self) -> dict:
+        """Plain data for keeping the wheel between requests (e.g. in a web session)."""
+        return {
+            "round_number": self.round_number,
+            "angle": self.angle,
+            "wedges": [[w.kind.value, w.value] for w in self.wedges],
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict, rng: random.Random | None = None) -> Wheel:
+        """Rebuild a wheel from ``to_dict``: same wedges, round and resting angle."""
+        wedges = [Wedge(WedgeType(kind), value) for kind, value in data["wedges"]]
+        wheel = cls(wedges, data["round_number"], rng)
+        wheel.angle = data["angle"]
+        return wheel
+
     def __str__(self) -> str:
         labels = [w.label for w in self.wedges]
         rows = [" | ".join(f"{label:>11}" for label in labels[i:i + 6]) for i in range(0, len(labels), 6)]

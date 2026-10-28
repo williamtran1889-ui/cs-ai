@@ -11,8 +11,16 @@
   <h1>Wheel of Fortune</h1>
 <main class="game-container">
 
-  <!--Form for starting a new game-->
+  <!--Form for starting a new game: 2 to 5 player names, put in a random playing order-->
   <form method="post" class="start-form">
+    <div class="player-fields">
+      {% for n in range(max_players) %}
+        <input type="text" name="player" maxlength="20" autocomplete="off"
+               placeholder="Player {{ n + 1 }}" aria-label="Player {{ n + 1 }} name"
+               value="{{ player_names[n] if n < player_names|length else '' }}"
+               {% if n < min_players %}required{% endif %}>
+      {% endfor %}
+    </div>
     <button class="start-button" type="submit" name="action" value="start">START</button>
   </form>
 
@@ -35,8 +43,8 @@
                 <div class="word">
                     {% for letter in word %}
                         <div class="tile {% if letter == ' ' %}green-tile{% else %}letter-tile{% endif %}">
-                            <!--Reveal the letter if it has been guessed-->
-                            {% if letter != ' ' and letter in guessed_letters %}
+                            <!--Reveal the letter if it has been guessed (or the puzzle was solved)-->
+                            {% if letter != ' ' and (solved or letter in guessed_letters) %}
                                 {{ letter }}
                             {% endif %}
                         </div>
@@ -44,33 +52,72 @@
                     {% endfor %}
                 </div>
             {% endfor %}
-            
+
             {% for box in range([board_rows[row_index] - ns.used, 0]|max) %}
                 <div class="tile green-tile"></div>
             {% endfor %}
         </div>
     {% endfor %}
-    <h1>{{ game.category }}</h1>
+    {% if game %}<h1>{{ game.category }}</h1>{% endif %}
   </section>
+
+  <!--Message area for game feedback-->
+  <p class="message" aria-live="polite">{{ message }}</p>
 
   <!--Game Information Section-->
   {% if game %}
   <section class="game-info">
-    <div class="stats">
-      <p><strong>Spin value:</strong> ${{ "{:,}".format(spin_value) }}</p>
-      <p><strong>Total money:</strong> ${{ "{:,}".format(money) }}</p>
+    <p class="round"><strong>Round {{ round_number }}</strong> &middot; Hint: {{ game.hint }}</p>
+
+    <!--One box per player, in playing order; the player whose turn it is is highlighted-->
+    <div class="scoreboard">
+      {% for player in scoreboard %}
+        <div class="player{% if player.current and not solved %} current{% endif %}">
+          <span class="player-name">{{ player.name }}</span>
+          <span class="player-money">${{ "{:,}".format(player.money) }}</span>
+        </div>
+      {% endfor %}
     </div>
 
-    <!--Form for making guesses-->
-    <form method="post" class="guess-form">
-      <input type="hidden" name="action" value="guess">
-      <label for="letter">Guess a consonant</label>
-      <input id="letter" name="letter" type="text" maxlength="1" pattern="[A-Za-z]" autocomplete="off" required>
-      <button type="submit" class="guess-button">GUESS</button>
-    </form>
+    <div class="stats">
+      <p><strong>Spin value:</strong> {% if current_spin %}${{ "{:,}".format(current_spin) }}{% else %}&mdash;{% endif %}</p>
+    </div>
 
-    <!--Message area for game feedback-->
-    <p class="message" aria-live="polite">{{ message }}</p>
+    {% if solved %}
+      <!--Round over: start the next round with a new puzzle and a new wheel-->
+      <p class="winner">{{ winner_name }} wins round {{ round_number }}!</p>
+      <form method="post" class="guess-form">
+        <button type="submit" name="action" value="next_round" class="guess-button">NEXT ROUND</button>
+      </form>
+    {% else %}
+      <form method="post" class="guess-form">
+        <button type="submit" name="action" value="spin" class="guess-button" {% if can_guess %}disabled{% endif %}>SPIN THE WHEEL</button>
+      </form>
+
+      <!--Form for making guesses-->
+      <form method="post" class="guess-form">
+        <input type="hidden" name="action" value="guess">
+        <label for="letter">Guess a consonant</label>
+        <input id="letter" name="letter" type="text" maxlength="1" pattern="[A-Za-z]" autocomplete="off" required>
+        <button type="submit" class="guess-button">GUESS</button>
+      </form>
+
+      <!--Form for buying a vowel-->
+      <form method="post" class="guess-form">
+        <input type="hidden" name="action" value="buy_vowel">
+        <label for="vowel">Buy a vowel (${{ vowel_cost }})</label>
+        <input id="vowel" name="vowel" type="text" maxlength="1" pattern="[AEIOUaeiou]" autocomplete="off" required>
+        <button type="submit" class="guess-button">BUY</button>
+      </form>
+
+      <!--Form for solving the puzzle-->
+      <form method="post" class="guess-form solve-form">
+        <input type="hidden" name="action" value="solve">
+        <label for="solution">Solve the puzzle</label>
+        <input id="solution" name="solution" type="text" autocomplete="off" required>
+        <button type="submit" class="guess-button">SOLVE</button>
+      </form>
+    {% endif %}
 
     <!--Area for displaying guessed letters-->
     <div class="guessed-area"><strong>Guessed letters:</strong>

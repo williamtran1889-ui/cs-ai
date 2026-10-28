@@ -18,8 +18,27 @@ h1{ text-align: center; }
 /* Start button container */
 .start-form { 
   display: flex; 
-  justify-content: center; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 12px; 
   margin: 0 0 22px; 
+}
+
+/* Player name fields (2 to 5 players) */
+.player-fields { 
+  display: flex; 
+  justify-content: center; 
+  flex-wrap: wrap; 
+  gap: 8px; 
+}
+
+.player-fields input { 
+  width: 140px; 
+  height: 38px; 
+  border: 2px solid #aaa; 
+  border-radius: 4px; 
+  padding: 0 8px; 
+  font-size: 1rem; 
 }
 
 /* Start and Guess buttons */
@@ -136,14 +155,56 @@ h1{ text-align: center; }
   text-transform: uppercase;  
 }
 
-.message { 
-  min-height: 1.3em; 
-  margin: 16px 0 12px; 
+.message {
+  min-height: 1.3em;
+  margin: 16px 0 12px;
+  text-align: center;
 }
 .guessed-area { 
   margin-top: 10px; 
   overflow-wrap: anywhere; 
 }
+
+/* Scoreboard: one box per player, current player highlighted */
+.scoreboard { 
+  display: flex; 
+  justify-content: center; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  margin: 10px 0; 
+}
+
+.player { 
+  display: flex; 
+  flex-direction: column; 
+  min-width: 120px; 
+  padding: 8px 14px; 
+  border: 2px solid #555; 
+  border-radius: 5px; 
+}
+
+.player.current { 
+  border-color: gold; 
+  background: #2a2a10; 
+}
+
+.player-name { font-weight: 700; }
+
+.round { margin: 0 0 4px; }
+
+.winner { 
+  margin: 14px 0 4px; 
+  font-size: 1.3rem; 
+  font-weight: 700; 
+  color: gold; 
+}
+
+.guess-button:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+}
+
+.solve-form input { width: min(100%, 280px); }
 
 /* Responsive design for smaller screens */
 @media (max-width: 600px) {
