@@ -1,5 +1,6 @@
 import contextlib
 import io
+import json
 import random
 import unittest
 from unittest import mock
@@ -111,6 +112,28 @@ class SpinWheelTest(unittest.TestCase):
     def test_empty_wheel_is_rejected(self):
         with self.assertRaises(ValueError):
             Wheel([])
+
+
+class KeepWheelBetweenRequestsTest(unittest.TestCase):
+    """The web game keeps one wheel per round, so a wheel must survive being saved and reloaded."""
+
+    def test_round_trip_keeps_wedges_round_and_angle(self):
+        wheel = create_wheel(2, random.Random(11))
+        wheel.spin()
+        copy = Wheel.from_dict(wheel.to_dict())
+        self.assertEqual(copy.wedges, wheel.wedges)
+        self.assertEqual(copy.round_number, 2)
+        self.assertEqual(copy.angle, wheel.angle)
+
+    def test_saved_wheel_is_plain_json_data(self):
+        saved = create_wheel(1, random.Random(1)).to_dict()
+        self.assertEqual(json.loads(json.dumps(saved)), saved)
+
+    def test_a_reloaded_wheel_spins_on_from_where_it_stopped(self):
+        wheel = create_wheel(1, random.Random(12))
+        first = wheel.spin()
+        second = Wheel.from_dict(wheel.to_dict(), random.Random(13)).spin()
+        self.assertAlmostEqual(second.start_angle, first.end_angle)
 
 
 class CommandLineTest(unittest.TestCase):

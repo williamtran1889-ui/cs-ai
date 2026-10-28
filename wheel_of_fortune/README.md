@@ -17,6 +17,8 @@ python3 -m wheel_of_fortune --seed 7   # same wheel and spins every time
 python3 -m unittest discover -v        # run the tests from the repo root
 ```
 
+The wheel is one part of the game. The same package also holds `players.py` (story #4: 2-5 players, random order, turn rotation), `toss_up.py` (story #14: `python3 -m wheel_of_fortune.toss_up`) and `puzzles.py` (the puzzle data in `data/` and the board layout). `stories_rz/app.py` puts them together in the web game; see the repo README.
+
 ## Using it from other stories
 
 ```python
@@ -33,6 +35,7 @@ result.message()     # text to show the player
 
 - **Consonant guess (#7):** winnings are `result.value * letters_found` when `result.is_cash`.
 - **Lose turn / bankrupt (#10):** check `result.wedge.kind` against `WedgeType.BANKRUPT` and `WedgeType.LOSE_A_TURN`.
+- **Keeping the wheel between requests:** `wheel.to_dict()` gives plain data you can store in a web session and `Wheel.from_dict(data)` rebuilds the same wedges, round and resting angle, so the web game spins one wheel all round instead of building a new one each spin.
 - **Visualize spin (#6):** each result carries `start_angle`, `rotation` and `end_angle` (degrees), so the animation can turn the wheel from where it was to where it stopped. Wedge `i` covers `i * wheel.degrees_per_wedge` up to the next wedge, and the pointer is at 0°.
 
 ## How the wheel is built
